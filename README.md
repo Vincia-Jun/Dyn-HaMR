@@ -152,6 +152,21 @@ python -u run_opt.py data=video run_opt=True run_vis=True is_static=<True of Fal
 ```
 As a multi-stage pipeline, you can customize the optimization process. Add `is_static=True` for static camera videos. Adding `run_prior=True` can activate the motion prior in stage III. Please note that in the current version, each motion chunk size needs to be set to 128 to be compatible with the original setting of HMP only when the prior module is activated.
 
+### Render saved `.npz` predictions back to RGB frames
+If you already executed `run_opt.py` but did not render the `src_cam` view, you can still project the recovered 3D hands onto the original frames with the helper script:
+
+```
+python dyn-hamr/render_npz.py \
+    /path/to/result.npz \
+    /path/to/images \
+    --output-prefix renders/demo \
+    --render-views src_cam front \
+    --mano-model-path _DATA/data/mano \
+    --mano-mean-path _DATA/data/mano_mean_params.npz
+```
+
+The script takes the `.npz` file emitted by `run_opt.py` plus the directory of RGB frames, rebuilds the MANO meshes with the existing renderer, and composites them with the input images for any view supported by `animate_scene` (`src_cam`, `front`, `above`, `side`). Provide `--intrins fx fy cx cy` when the `.npz` does not already contain camera intrinsics.
+
 ### Blender Addon
 Coming soon.
 
