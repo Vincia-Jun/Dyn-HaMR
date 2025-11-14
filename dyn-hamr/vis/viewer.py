@@ -377,7 +377,19 @@ class OffscreenAnimation(AnimationBase):
             os.makedirs(save_name, exist_ok=True)
             for idx, i in enumerate(frames):
                 imageio.imwrite(f"{save_name}/" + f'{str(idx).zfill(6)}.jpg', i[:, :, :3])
-            imageio.mimwrite(save_path, frames, fps=self.fps)
+            try:
+                imageio.mimwrite(save_path, frames, fps=self.fps)
+            except TypeError as err:
+                # Some backends (e.g. tifffile) do not understand the ``fps`` keyword.
+                # Fall back to calling ``mimwrite`` without it so rendering still
+                # succeeds even if ffmpeg is unavailable.
+                if "fps" not in str(err).lower():
+                    raise
+                print(
+                    f"imageio backend does not support FPS: {err}; "
+                    "retrying without fps argument"
+                )
+                imageio.mimwrite(save_path, frames)
             print("wrote video to", save_path)
             return save_path
 
