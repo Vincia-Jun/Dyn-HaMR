@@ -167,20 +167,6 @@ python dyn-hamr/render_npz.py \
 
 The script takes the `.npz` file emitted by `run_opt.py` plus the directory of RGB frames, rebuilds the MANO meshes with the existing renderer, and composites them with the input images for any view supported by `animate_scene` (`src_cam`, `front`, `above`, `side`). Provide `--intrins fx fy cx cy` when the `.npz` does not already contain camera intrinsics.
 
-### Overlay 2D hand skeletons from `.npz` files
-When you only need the 21 MANO keypoints and bone connections overlaid on the original frames (instead of a full mesh render), use the companion helper:
-
-```
-python dyn-hamr/render_keypoints.py \
-    /path/to/result.npz \
-    /path/to/images \
-    --output-dir renders/demo_kpts \
-    --save-video renders/demo_kpts.mp4 \
-    --mano-model-path _DATA/data/mano \
-    --mano-mean-path _DATA/data/mano_mean_params.npz
-```
-
-The script rebuilds the MANO joints from the saved parameters, projects all 21 per-hand keypoints with the stored camera extrinsics/intrinsics, and draws the skeleton + markers back onto each frame (optionally saving an `.mp4`). Customize marker sizes, bone thickness, alpha blending, or provide explicit intrinsics through the CLI flags described in `--help`.
 
 ### Blender Addon
 Coming soon.
