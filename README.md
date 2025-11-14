@@ -167,6 +167,7 @@ python dyn-hamr/render_npz.py \
 
 The script takes the `.npz` file emitted by `run_opt.py` plus the directory of RGB frames, rebuilds the MANO meshes with the existing renderer, and composites them with the input images for any view supported by `animate_scene` (`src_cam`, `front`, `above`, `side`). Provide `--intrins fx fy cx cy` when the `.npz` does not already contain camera intrinsics.
 
+
 ### Blender Addon
 Coming soon.
 
